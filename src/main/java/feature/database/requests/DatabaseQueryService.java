@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseQueryService {
-
     Database database = Database.getInstance();
 
     private String getSql(String FileName) {
