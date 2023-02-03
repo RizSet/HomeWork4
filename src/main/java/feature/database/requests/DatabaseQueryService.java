@@ -6,6 +6,7 @@ import feature.database.template.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -25,18 +26,19 @@ public class DatabaseQueryService {
 
     public List<MaxSalaryWorker> findMaxSalaryWorker() {
         List<MaxSalaryWorker> maxSalaryWorkerList = new ArrayList<>();
-        try (Statement st = database.getConnection().createStatement()) {
-            try (ResultSet rs = st.executeQuery(getSql("./sql/find_max_salary_worker.sql"))) {
-                while (rs.next()) {
-                    MaxSalaryWorker maxSalaryWorker = new MaxSalaryWorker();
-                    maxSalaryWorker.setName(rs.getString("name"));
-                    maxSalaryWorker.setSalary(rs.getInt("salary"));
-                    maxSalaryWorkerList.add(maxSalaryWorker);
+            try (Statement st = database.getConnection().createStatement()) {
+                try (ResultSet rs = st.executeQuery(getSql("./sql/find_max_salary_worker.sql"))) {
+                    while (rs.next()) {
+                        MaxSalaryWorker maxSalaryWorker = new MaxSalaryWorker();
+                        maxSalaryWorker.setName(rs.getString("name"));
+                        maxSalaryWorker.setSalary(rs.getInt("salary"));
+                        maxSalaryWorkerList.add(maxSalaryWorker);
+                    }
                 }
+                database.getConnection().close();
+            }catch (SQLException e) {
+                throw new RuntimeException(e);
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
         return maxSalaryWorkerList;
     }
 
@@ -51,6 +53,7 @@ public class DatabaseQueryService {
                     maxProjectCountClientList.add(maxProjectCountClient);
                 }
             }
+            database.getConnection().close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -68,6 +71,7 @@ public class DatabaseQueryService {
                     longestProjectList.add(longestProject);
                 }
             }
+            database.getConnection().close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -86,6 +90,7 @@ public class DatabaseQueryService {
                     youngestEldestWorkerList.add(youngestEldestWorker);
                 }
             }
+            database.getConnection().close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -103,6 +108,7 @@ public class DatabaseQueryService {
                     projectPriceList.add(projectPrice);
                 }
             }
+            database.getConnection().close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

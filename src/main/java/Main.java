@@ -2,6 +2,7 @@ import feature.database.Database;
 import feature.database.requests.DatabaseQueryService;
 import feature.database.template.*;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class Main {
