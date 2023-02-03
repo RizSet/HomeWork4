@@ -26,7 +26,8 @@ public class DatabaseQueryService {
 
     public List<MaxSalaryWorker> findMaxSalaryWorker() {
         List<MaxSalaryWorker> maxSalaryWorkerList = new ArrayList<>();
-            try (Statement st = database.getConnection().createStatement()) {
+            try (Connection connection = database.getConnection();
+                 Statement st = connection.createStatement()) {
                 try (ResultSet rs = st.executeQuery(getSql("./sql/find_max_salary_worker.sql"))) {
                     while (rs.next()) {
                         MaxSalaryWorker maxSalaryWorker = new MaxSalaryWorker();
@@ -35,7 +36,6 @@ public class DatabaseQueryService {
                         maxSalaryWorkerList.add(maxSalaryWorker);
                     }
                 }
-                database.getConnection().close();
             }catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -44,7 +44,8 @@ public class DatabaseQueryService {
 
     public List<MaxProjectCountClient> findMaxProjectClient() {
         List<MaxProjectCountClient> maxProjectCountClientList = new ArrayList<>();
-        try (Statement st = database.getConnection().createStatement()) {
+        try (Connection connection = database.getConnection();
+             Statement st = connection.createStatement()) {
             try (ResultSet rs = st.executeQuery(getSql("./sql/find_max_projects_client.sql"))) {
                 while (rs.next()) {
                     MaxProjectCountClient maxProjectCountClient = new MaxProjectCountClient();
@@ -53,7 +54,6 @@ public class DatabaseQueryService {
                     maxProjectCountClientList.add(maxProjectCountClient);
                 }
             }
-            database.getConnection().close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -62,7 +62,8 @@ public class DatabaseQueryService {
 
     public List<LongestProject> findLongestProject() {
         List<LongestProject> longestProjectList = new ArrayList<>();
-        try (Statement st = database.getConnection().createStatement()) {
+        try (Connection connection = database.getConnection();
+             Statement st = connection.createStatement()) {
             try (ResultSet rs = st.executeQuery(getSql("./sql/find_longest_project.sql"))) {
                 while (rs.next()) {
                     LongestProject longestProject = new LongestProject();
@@ -71,7 +72,6 @@ public class DatabaseQueryService {
                     longestProjectList.add(longestProject);
                 }
             }
-            database.getConnection().close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -80,7 +80,8 @@ public class DatabaseQueryService {
 
     public List<YoungestEldestWorker> findYoungestEldestWorker() {
         List<YoungestEldestWorker> youngestEldestWorkerList = new ArrayList<>();
-        try (Statement st = database.getConnection().createStatement()) {
+        try (Connection connection = database.getConnection();
+             Statement st = connection.createStatement()) {
             try (ResultSet rs = st.executeQuery(getSql("./sql/find_youngest_eldest_workers.sql"))) {
                 while (rs.next()) {
                     YoungestEldestWorker youngestEldestWorker = new YoungestEldestWorker();
@@ -90,7 +91,6 @@ public class DatabaseQueryService {
                     youngestEldestWorkerList.add(youngestEldestWorker);
                 }
             }
-            database.getConnection().close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -99,7 +99,8 @@ public class DatabaseQueryService {
 
     public List<ProjectPrice> findProjectPrice() {
         List<ProjectPrice> projectPriceList = new ArrayList<>();
-        try (Statement st = database.getConnection().createStatement()) {
+        try (Connection connection = database.getConnection();
+             Statement st = connection.createStatement()) {
             try (ResultSet rs = st.executeQuery(getSql("./sql/print_project_prices.sql"))) {
                 while (rs.next()) {
                     ProjectPrice projectPrice = new ProjectPrice();
@@ -108,7 +109,6 @@ public class DatabaseQueryService {
                     projectPriceList.add(projectPrice);
                 }
             }
-            database.getConnection().close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

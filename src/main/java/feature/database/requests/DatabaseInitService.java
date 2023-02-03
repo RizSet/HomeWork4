@@ -4,22 +4,21 @@ import feature.database.Database;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class DatabaseInitService {
     public static void main(String[] args) {
-        try {
+        try (Connection connection = Database.getInstance().getConnection();
+             Statement st = connection.createStatement()) {
             String initDatabaseFileName = "./sql/init_db.sql";
             String sql = String.join("\n",
                     Files.readAllLines(Paths.get(initDatabaseFileName))
             );
-            Database.getInstance().executeUpdate(sql);
-            Database.getInstance().getConnection().close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (SQLException e) {
+            st.executeUpdate(sql);
+        } catch (IOException | SQLException e) {
             throw new RuntimeException(e);
         }
     }
