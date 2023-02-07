@@ -1,46 +1,6 @@
-INSERT INTO worker (name, birthday, level, salary) VALUES
-                                               ('Dima', '1993-09-30', 'Trainee', 500),
-                                               ('Den', '1995-02-20', 'Trainee', 400),
-                                               ('Sem', '1994-03-20', 'Junior', 1500),
-                                               ('Max', '1996-06-30', 'Junior', 1100),
-                                               ('Alex', '1992-08-25', 'Middle', 3000),
-                                               ('Nik', '1990-08-30', 'Senior', 5000),
-                                               ('Riz', '1991-05-01', 'Senior', 5000),
-                                               ('Set', '1992-06-30', 'Middle', 2500),
-                                               ('Ostin', '1999-06-30', 'Middle', 2000),
-                                               ('Luck', '1998-06-30', 'Trainee', 500);
-INSERT INTO client (name) VALUES
-                              ('Liza'),
-                              ('Sik'),
-                              ('Nolan'),
-                              ('Ady'),
-                              ('Lean');
-INSERT INTO project (client_id, start_date, finish_date) VALUES
-                                               ( 1 , '2020-05-13', '2024-06-12'),
-                                               ( 1 , '2022-05-13', '2023-06-12'),
-                                               ( 1 , '2022-05-13', '2022-07-12'),
-                                               ( 2 , '2020-05-13', '2025-06-12'),
-                                               ( 3 , '2019-05-13', '2023-06-12'),
-                                               ( 3 , '2021-05-13', '2025-06-12'),
-                                               ( 4 , '2022-05-13', '2025-06-12'),
-                                               ( 4 , '2018-05-13', '2023-06-12'),
-                                               ( 5 , '2019-05-13', '2022-06-12'),
-                                               ( 5 , '2020-05-13', '2025-06-12');
-INSERT INTO project_worker (project_id, worker_id) VALUES
-                                                       ( 1 , 2),
-                                                       ( 1 , 1),
-                                                       ( 1 , 3),
-                                                       ( 1 , 10),
-                                                       ( 1 , 9),
-                                                       ( 2 , 5),
-                                                       ( 2 , 4),
-                                                       ( 2 , 7),
-                                                       ( 3 , 8),
-                                                       ( 4 , 9),
-                                                       ( 5 , 6),
-                                                       ( 6 , 3),
-                                                       ( 7 , 4),
-                                                       ( 8 , 5),
-                                                       ( 9 , 6),
-                                                       ( 10 , 7);
+INSERT INTO worker (name, birthday, level, salary) VALUES (?, ?, ?, ?);
+INSERT INTO client (name) VALUES (?);
+INSERT INTO project (client_id, start_date, finish_date) VALUES ( ? , ?, ?);
+INSERT INTO project_worker (project_id, worker_id) VALUES ( ? , ?);
+
 

@@ -12,5 +12,6 @@ public class Main {
         List<LongestProject> longestProject = new DatabaseQueryService().findLongestProject();
         List<ProjectPrice> projectPrice = new DatabaseQueryService().findProjectPrice();
         List<YoungestEldestWorker> youngestEldestWorker = new DatabaseQueryService().findYoungestEldestWorker();
+
     }
 }
