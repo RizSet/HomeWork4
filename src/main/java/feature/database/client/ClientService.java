@@ -1,5 +1,7 @@
 package feature.database.client;
 
+import feature.database.Database;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,34 +10,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClientService {
-    private PreparedStatement createClient;
-    private PreparedStatement getByIdClient;
-    private PreparedStatement setNameClient;
-    private PreparedStatement deleteByIdClient;
-    private PreparedStatement allClients;
-    private PreparedStatement selectMaxIdSt;
+    private String createClient;
+    private String getByIdClient;
+    private String setNameClient;
+    private String deleteByIdClient;
+    private String allClients;
+    private String selectMaxIdSt;
 
-    public ClientService(Connection connection) {
-        try {
-            createClient = connection.prepareStatement("INSERT INTO client (name) VALUES (?)");
-            getByIdClient = connection.prepareStatement("SELECT name FROM client WHERE id = ?");
-            setNameClient = connection.prepareStatement("UPDATE client SET name = ? WHERE id = ?");
-            deleteByIdClient = connection.prepareStatement("DELETE FROM client WHERE id = ?");
-            allClients = connection.prepareStatement("SELECT id, name FROM client");
-            selectMaxIdSt = connection.prepareStatement("SELECT max(id) AS maxId FROM client");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
+    public ClientService() {
+        createClient = "INSERT INTO client (name) VALUES (?)";
+        getByIdClient = "SELECT name FROM client WHERE id = ?";
+        setNameClient = "UPDATE client SET name = ? WHERE id = ?";
+        deleteByIdClient = "DELETE FROM client WHERE id = ?";
+        allClients = "SELECT id, name FROM client";
+        selectMaxIdSt = "SELECT max(id) AS maxId FROM client";
     }
 
     public long create(String name) {
         long id = 0;
-        try {
-            createClient.setString(1, name);
-            createClient.executeUpdate();
-            try (ResultSet rs = selectMaxIdSt.executeQuery()) {
-                rs.next();
-                id = rs.getLong("maxId");
+        try (Connection connection = Database.getInstance().getConnection()) {
+            try (PreparedStatement pstCreateClient = connection.prepareStatement(createClient)) {
+                pstCreateClient.setString(1, name);
+                pstCreateClient.executeUpdate();
+                try (PreparedStatement pstSelectMaxIdSt = connection.prepareStatement(selectMaxIdSt)) {
+                    try (ResultSet rs = pstSelectMaxIdSt.executeQuery()) {
+                        rs.next();
+                        id = rs.getLong("maxId");
+                    }
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -45,34 +48,38 @@ public class ClientService {
 
     public String getById(long id) {
         String name = null;
-        try {
-            getByIdClient.setLong(1, id);
-            try (ResultSet rs = getByIdClient.executeQuery()) {
-                rs.next();
-                name = rs.getString("name");
+        try (Connection connection = Database.getInstance().getConnection()) {
+            try (PreparedStatement pstGetByIdClient = connection.prepareStatement(getByIdClient)) {
+                pstGetByIdClient.setLong(1, id);
+                try (ResultSet rs = pstGetByIdClient.executeQuery()) {
+                    rs.next();
+                    name = rs.getString("name");
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return name;
     }
 
     public void setName(long id, String name) {
-        try {
-            setNameClient.setString(1, name);
-            setNameClient.setLong(2, id);
-            setNameClient.executeUpdate();
+        try (Connection connection = Database.getInstance().getConnection()) {
+            try (PreparedStatement pstSetNameClient = connection.prepareStatement(setNameClient)) {
+                pstSetNameClient.setString(1, name);
+                pstSetNameClient.setLong(2, id);
+                pstSetNameClient.executeUpdate();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 
     public void deleteById(long id) {
-        try {
-            deleteByIdClient.setLong(1, id);
-            deleteByIdClient.executeUpdate();
+        try (Connection connection = Database.getInstance().getConnection()) {
+            try (PreparedStatement pstDeleteByIdClient = connection.prepareStatement(deleteByIdClient)) {
+                pstDeleteByIdClient.setLong(1, id);
+                pstDeleteByIdClient.executeUpdate();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -81,10 +88,14 @@ public class ClientService {
     public List<Client> listAll() {
         ArrayList<Client> clientsList = new ArrayList<>();
 
-        try (ResultSet rs = allClients.executeQuery()) {
-            while (rs.next()) {
-                Client client = new Client(rs.getLong("id"), rs.getString("name"));
-                clientsList.add(client);
+        try (Connection connection = Database.getInstance().getConnection()) {
+            try (PreparedStatement pstAllClients = connection.prepareStatement(allClients)) {
+                try (ResultSet rs = pstAllClients.executeQuery()) {
+                    while (rs.next()) {
+                        Client client = new Client(rs.getLong("id"), rs.getString("name"));
+                        clientsList.add(client);
+                    }
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

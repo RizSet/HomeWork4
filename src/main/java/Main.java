@@ -12,8 +12,7 @@ public class Main {
 
         new DatabaseInitService().initDb();
 
-        try (Connection connection = Database.getInstance().getConnection()) {
-            ClientService clientService = new ClientService(connection);
+            ClientService clientService = new ClientService();
             long id = clientService.create("Lera");
             System.out.println(id);
             System.out.println(clientService.getById(id));
@@ -24,9 +23,5 @@ public class Main {
             for (Client client : clients) {
                 System.out.println("client = " + client.getId() + " " + client.getName());
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
     }
 }
