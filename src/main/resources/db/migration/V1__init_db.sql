@@ -1,4 +1,4 @@
-CREATE TABLE worker (
+CREATE TABLE IF NOT EXISTS worker (
                         id IDENTITY PRIMARY KEY,
                         name VARCHAR(1000) NOT NULL
                             CONSTRAINT name_length_worker
@@ -13,19 +13,19 @@ CREATE TABLE worker (
                             CONSTRAINT amount_salary
                             CHECK (100000 >= salary AND salary >= 100)
 );
-CREATE TABLE client (
+CREATE TABLE IF NOT EXISTS client (
                         id IDENTITY PRIMARY KEY,
                         name VARCHAR(1000) NOT NULL
                             CONSTRAINT name_length_client
                             CHECK (length(name) > 2)
 );
-CREATE TABLE project (
+CREATE TABLE IF NOT EXISTS project (
                         id IDENTITY PRIMARY KEY,
                         client_id BIGINT,
                         start_date date,
                         finish_date date
 );
-CREATE TABLE project_worker (
+CREATE TABLE IF NOT EXISTS project_worker (
                          project_id BIGINT,
                          worker_id BIGINT,
                          FOREIGN KEY (project_id) REFERENCES project(id),

@@ -11,10 +11,10 @@ public class Database {
 
     private Database() {
         try {
-            String connectionUrl = "jdbc:h2:./home_work3";
+            String connectionUrl = "jdbc:h2:./home_work6";
             connection = DriverManager.getConnection(connectionUrl);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
@@ -28,7 +28,14 @@ public class Database {
     }
 
     public Connection getConnection() {
-        return connection;
+        try {
+            if (connection.isClosed()) {
+                String connectionUrl = "jdbc:h2:./home_work6";
+                connection = DriverManager.getConnection(connectionUrl);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }return connection;
     }
 
     public static Database getInstance() {
